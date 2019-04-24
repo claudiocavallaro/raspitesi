@@ -32,15 +32,19 @@ public class Application {
                 BufferedReader bfr = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 line = bfr.readLine();
 
+                int exit = 1;
                 while ((line = bfr.readLine())!= null) {
                     System.out.println(line);
                     if (!line.equals("No card")){
                         //sendGet("http://192.168.1.92:8080/api/entrance", line);
+                        exit = 0;
                         break;
                     }
                 }
 
-                flag = true;
+                if(exit == 0) {
+                    flag = true;
+                }
 
                 Thread.sleep(1000);
             } catch (Exception e) {
