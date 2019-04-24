@@ -44,7 +44,7 @@ public class Application {
             }
         }*/
 
-        sendGet("http://192.168.1.92.:8080/api/entrance");
+        sendGet("http://192.168.1.92:8080/api/entrance");
     }
 
     private String sendGet(String getUrl) {
