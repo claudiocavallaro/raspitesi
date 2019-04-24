@@ -35,7 +35,7 @@ public class Application {
                     System.out.println(line);
                 }
 
-                if (!line.equals("No card")){
+                if (!(line.equals("No card"))){
                     break;
                 }
                 Thread.sleep(1000);
