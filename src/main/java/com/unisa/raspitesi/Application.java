@@ -24,7 +24,7 @@ public class Application {
 
         String line = "";
         while (true) {
-            ProcessBuilder pb = new ProcessBuilder("python", this.getClass().getClassLoader().getResourceAsStream("readNoT.py").toString());
+            ProcessBuilder pb = new ProcessBuilder("python", this.getClass().getResource("/readNoT.py").getPath());
             try {
                 Process p = pb.start();
 
