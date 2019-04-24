@@ -23,7 +23,8 @@ public class Application {
     public Application(){
 
         String line = "";
-        while (true) {
+        boolean flag = false;
+        while (flag == false) {
             ProcessBuilder pb = new ProcessBuilder("python", this.getClass().getResource("/readNoT.py").getPath());
             try {
                 Process p = pb.start();
@@ -33,11 +34,14 @@ public class Application {
 
                 while ((line = bfr.readLine())!= null) {
                     System.out.println(line);
+                    if (!line.equals("No card")){
+                        //sendGet("http://192.168.1.92:8080/api/entrance", line);
+                        break;
+                    }
                 }
 
-                if (!(line.equals("No card"))){
-                    break;
-                }
+                flag = true;
+
                 Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,6 +49,7 @@ public class Application {
         }
 
         sendGet("http://192.168.1.92:8080/api/entrance", line);
+
     }
 
     private String sendGet(String getUrl, String line) {
