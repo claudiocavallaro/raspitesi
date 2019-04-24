@@ -1,5 +1,7 @@
 package com.unisa.raspitesi.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.Unirest;
 import com.unisa.raspitesi.Application;
 import org.springframework.http.MediaType;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestComponent {
 
 
+    @RequestMapping(value = "/restart", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String get(){
 
-    @RequestMapping(value = "/restart", method = RequestMethod.GET)
-    public void reStart(){
+        Gson gson = new GsonBuilder().create();
+        String result = gson.toJson("Restart");
 
-        Application app = new Application();
+        return result;
+
     }
 
 }
