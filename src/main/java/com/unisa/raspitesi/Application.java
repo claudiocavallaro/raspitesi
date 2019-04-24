@@ -7,6 +7,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
 
 @EnableSwagger2
 @SpringBootApplication
@@ -14,8 +15,12 @@ public class Application {
 
     public static void main(String[] args){
 
-        SpringApplication.run(Application.class, args);
+        //SpringApplication.run(Application.class, args);
 
+        SpringApplication springApplication = new SpringApplication(Application.class);
+        springApplication.setDefaultProperties(Collections.singletonMap("server.port", "1883"));
+
+        springApplication.run(args);
         Application app = new Application();
     }
 
@@ -77,5 +82,5 @@ public class Application {
         }
         return noresult;
     }
-    
+
 }
