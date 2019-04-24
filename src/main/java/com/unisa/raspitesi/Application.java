@@ -22,7 +22,7 @@ public class Application {
 
     public Application(){
 
-        while (true) {
+/*        while (true) {
             ProcessBuilder pb = new ProcessBuilder("python","readNoT.py");
             try {
                 Process p = pb.start();
@@ -42,7 +42,7 @@ public class Application {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         sendGet("http://192.168.1.92.:8080/api/entrance");
     }
