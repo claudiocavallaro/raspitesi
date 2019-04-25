@@ -1,6 +1,7 @@
 package com.unisa.raspitesi;
 
 import com.mashape.unirest.http.Unirest;
+import com.unisa.raspitesi.api.Nfc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,6 +21,7 @@ public class Application {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.run(args);
 
+        Nfc nfc = new Nfc();
     }
 
 
