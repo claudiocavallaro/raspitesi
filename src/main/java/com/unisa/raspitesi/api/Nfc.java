@@ -39,7 +39,7 @@ public class Nfc {
             }
         }
 
-        sendGet("http://192.168.1.92:8080/api/entrance", line);
+        //sendGet("http://192.168.1.92:8080/api/entrance", line);
     }
 
     private String sendGet(String getUrl, String line) {

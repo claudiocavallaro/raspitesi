@@ -20,7 +20,7 @@ public class RestComponent {
         Gson gson = new GsonBuilder().create();
         String result = gson.toJson("Restart");
 
-        //Nfc nfc = new Nfc();
+        Nfc nfc = new Nfc();
         return result;
 
     }
