@@ -18,7 +18,7 @@ public class Application {
 
         //SpringApplication.run(Application.class, args);
 
-        Nfc nfc = new Nfc();
+        //Nfc nfc = new Nfc();
 
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.run(args);
