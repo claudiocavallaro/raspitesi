@@ -19,6 +19,7 @@ public class RestComponent {
         Gson gson = new GsonBuilder().create();
         String result = gson.toJson("Restart");
 
+        Application app = new Application();
         return result;
 
     }
