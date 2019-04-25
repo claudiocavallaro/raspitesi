@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.Unirest;
 import com.unisa.raspitesi.Application;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestComponent {
 
 
-    @RequestMapping(value = "/restart", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/api/restart")
     public String get(){
 
         Gson gson = new GsonBuilder().create();
         String result = gson.toJson("Restart");
 
-        Application app = new Application();
+        Nfc nfc = new Nfc();
         return result;
 
     }
