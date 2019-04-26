@@ -1,13 +1,15 @@
 package com.unisa.raspitesi.api;
 
 import com.mashape.unirest.http.Unirest;
+import com.unisa.raspitesi.model.Read;
+import com.unisa.raspitesi.model.ReadEvent;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Nfc {
 
-    public Nfc(){
+    /*public Nfc(){
 
         String line = "";
         boolean flag = false;
@@ -40,6 +42,15 @@ public class Nfc {
         }
 
         sendGet("http://192.168.1.92:8080/api/entrance", line);
+    }*/
+
+
+    public Nfc(){
+        Read read = new Read("lettura");
+
+        ReadEvent event = new ReadEvent(read);
+        EventPublisherService.eventPublisherService.publishEvent(event);
+        
     }
 
     private String sendGet(String getUrl, String line) {
