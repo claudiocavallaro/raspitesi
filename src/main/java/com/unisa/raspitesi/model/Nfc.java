@@ -1,13 +1,18 @@
-package com.unisa.raspitesi.api;
+package com.unisa.raspitesi.model;
 
 import com.mashape.unirest.http.Unirest;
+import com.unisa.raspitesi.api.EventPublisherService;
 import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+
 public class Nfc {
+
+
 
     /*public Nfc(){
 
@@ -45,13 +50,16 @@ public class Nfc {
     }*/
 
 
-    public Nfc(){
+    /*public Nfc(){
+
+        System.out.println("Arrivo");
         Read read = new Read("lettura");
 
+        System.out.println(read.getUid());
         ReadEvent event = new ReadEvent(read);
         EventPublisherService.eventPublisherService.publishEvent(event);
-        
-    }
+
+    }*/
 
     private String sendGet(String getUrl, String line) {
         String noresult = "no results from sendGet on " + getUrl + " - check logs";
