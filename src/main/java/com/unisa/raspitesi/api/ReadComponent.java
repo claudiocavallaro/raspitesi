@@ -25,7 +25,7 @@ public class ReadComponent implements DisposableBean, Runnable {
     public void run() {
         while(flag == true){
 
-            Read read = new Read("");
+            Read read = null;
             String line = "";
             ProcessBuilder pb = new ProcessBuilder("python", this.getClass().getResource("/readNoT.py").getPath());
             try {
@@ -38,8 +38,7 @@ public class ReadComponent implements DisposableBean, Runnable {
                 while ((line = bfr.readLine()) != null) {
                     System.out.println(line);
                     if (!line.equals("No card")) {
-                        read.setUid(line);
-                        read.setTimestamp(System.currentTimeMillis());
+                        read = new Read(line);
                     }
                 }
 
@@ -49,8 +48,11 @@ public class ReadComponent implements DisposableBean, Runnable {
             }
 
 
-            ReadEvent event = new ReadEvent(read);
-            EventPublisherService.eventPublisherService.publishEvent(event);
+            if(read != null){
+                ReadEvent event = new ReadEvent(read);
+                EventPublisherService.eventPublisherService.publishEvent(event);
+            }
+
 
             try {
                 Thread.sleep(2000);
