@@ -23,8 +23,8 @@ public class ReadComponent implements DisposableBean, Runnable {
 
     @Override
     public void run() {
-        String lastValue = "";
-        long time = 0;
+        //String lastValue = "";
+        //long time = 0;
         while(flag == true){
 
             Read read = null;
@@ -54,14 +54,14 @@ public class ReadComponent implements DisposableBean, Runnable {
             //Successivamente si può aumentare questo tempo
 
             if(read != null){
-                if(read.getUid().equals(lastValue) && read.getTimestamp() - time < 60000){
-                    System.out.println("Nothing to publish");
-                } else {
+                //if(read.getUid().equals(lastValue) && read.getTimestamp() - time < 60000){
+                //    System.out.println("Nothing to publish");
+                //} else {
                     ReadEvent event = new ReadEvent(read);
                     EventPublisherService.eventPublisherService.publishEvent(event);
-                    lastValue = read.getUid();
-                    time = read.getTimestamp();
-                }
+                    //lastValue = read.getUid();
+                    //time = read.getTimestamp();
+                //}
             }
 
 

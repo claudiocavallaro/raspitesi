@@ -22,7 +22,8 @@ public class EventHandler {
     @EventListener
     public void readEvent(ReadEvent event){
         System.out.println(event.getRead() + "----- SENDING GET ------");
-        sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+        String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+        System.out.println(result);
     }
 
     private String sendGet(String getUrl, String line) {
