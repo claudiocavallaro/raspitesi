@@ -51,6 +51,7 @@ public class ReadComponent implements DisposableBean, Runnable {
 
             if(read != null){
                 if(!lastValue.equals(line)){
+                    System.out.println(line);
                     ReadEvent event = new ReadEvent(read);
                     EventPublisherService.eventPublisherService.publishEvent(event);
                     lastValue = line;
