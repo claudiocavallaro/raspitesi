@@ -1,5 +1,6 @@
 package com.unisa.raspitesi.api;
 
+import com.unisa.raspitesi.configuration.EventPublisherService;
 import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
 import org.springframework.beans.factory.DisposableBean;

@@ -1,8 +1,10 @@
 package com.unisa.raspitesi.api;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.unisa.raspitesi.model.ReadEvent;
+import com.unisa.raspitesi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
@@ -23,7 +25,16 @@ public class EventHandler {
     public void readEvent(ReadEvent event){
         System.out.println(event.getRead() + "----- SENDING GET ------");
         String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
-        System.out.println(result);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            User user = mapper.readValue(result, User.class);
+            System.out.println(user.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
     private String sendGet(String getUrl, String line) {

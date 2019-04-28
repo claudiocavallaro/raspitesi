@@ -1,13 +1,6 @@
 package com.unisa.raspitesi.model;
 
 import com.mashape.unirest.http.Unirest;
-import com.unisa.raspitesi.api.EventPublisherService;
-import com.unisa.raspitesi.model.Read;
-import com.unisa.raspitesi.model.ReadEvent;
-import org.springframework.stereotype.Component;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 
 public class Nfc {
