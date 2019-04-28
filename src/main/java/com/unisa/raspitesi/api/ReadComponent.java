@@ -50,9 +50,14 @@ public class ReadComponent implements DisposableBean, Runnable {
 
 
             if(read != null){
-                System.out.println(line);
-                ReadEvent event = new ReadEvent(read);
-                EventPublisherService.eventPublisherService.publishEvent(event);
+                if(read.getUid().equals(lastValue)){
+                    System.out.println("Nothing to publish");
+                } else {
+                    ReadEvent event = new ReadEvent(read);
+                    EventPublisherService.eventPublisherService.publishEvent(event);
+                    lastValue = read.getUid();
+                }
+
             }
 
 
