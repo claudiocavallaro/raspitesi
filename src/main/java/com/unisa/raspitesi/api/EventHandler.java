@@ -1,6 +1,7 @@
 package com.unisa.raspitesi.api;
 
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.unisa.raspitesi.model.ReadEvent;
@@ -28,8 +29,12 @@ public class EventHandler {
 
         ObjectMapper mapper = new ObjectMapper();
         try{
-            User user = mapper.readValue(result, User.class);
-            System.out.println(user.toString());
+            if (result.equals("Nothing")){
+                System.out.println("No user to display");
+            } else {
+                User user = mapper.readValue(result, User.class);
+                System.out.println(user.toString());
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
