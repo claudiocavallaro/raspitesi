@@ -24,6 +24,7 @@ public class ReadComponent implements DisposableBean, Runnable {
     @Override
     public void run() {
         String lastValue = "";
+        long time = 0;
         while(flag == true){
 
             Read read = null;
@@ -40,6 +41,7 @@ public class ReadComponent implements DisposableBean, Runnable {
                     System.out.println(line);
                     if (!line.equals("No card")) {
                         read = new Read(line);
+                        read.setTimestamp(System.currentTimeMillis());
                     }
                 }
 
@@ -48,14 +50,17 @@ public class ReadComponent implements DisposableBean, Runnable {
                 e.printStackTrace();
             }
 
+            //Se il tag l'ho passato meno di 60 secondi prima non fa nessuna richiesta
+            //Successivamente si può aumentare questo tempo
 
             if(read != null){
-                if(read.getUid().equals(lastValue)){
+                if(read.getUid().equals(lastValue) && read.getTimestamp() - time < 60000){
                     System.out.println("Nothing to publish");
                 } else {
                     ReadEvent event = new ReadEvent(read);
                     EventPublisherService.eventPublisherService.publishEvent(event);
                     lastValue = read.getUid();
+                    time = read.getTimestamp();
                 }
             }
 
