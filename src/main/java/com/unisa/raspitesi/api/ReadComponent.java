@@ -23,7 +23,7 @@ public class ReadComponent implements DisposableBean, Runnable {
 
     @Override
     public void run() {
-        String lastValue = "";
+    //    String lastValue = "";
         while(flag == true){
 
             Read read = null;
@@ -50,13 +50,13 @@ public class ReadComponent implements DisposableBean, Runnable {
 
 
             if(read != null){
-                if(read.getUid().equals(lastValue)){
-                    System.out.println("Nothing to publish");
-                } else {
+                //if(read.getUid().equals(lastValue)){
+                //    System.out.println("Nothing to publish");
+                //} else {
                     ReadEvent event = new ReadEvent(read);
                     EventPublisherService.eventPublisherService.publishEvent(event);
-                    lastValue = read.getUid();
-                }
+                //    lastValue = read.getUid();
+                //}
 
             }
 
