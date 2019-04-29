@@ -15,6 +15,7 @@ public class RestComponent {
     private static GpioPinDigitalOutput pin;
 
 
+    // Al momento non viene usato
     @GetMapping("/api/restart")
     public String get(){
 
@@ -26,6 +27,8 @@ public class RestComponent {
     }
 
 
+    /* Da testare gpio
+    * */
     @RequestMapping("/api/confirm")
     public String getConfirm(){
 

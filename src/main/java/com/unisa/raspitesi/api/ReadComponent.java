@@ -67,8 +67,6 @@ public class ReadComponent implements DisposableBean, Runnable {
                     //lastValue = read.getUid();
                     //time = read.getTimestamp();
                 //}
-            } else {
-                System.out.println("Nothing to publish");
             }
 
 
