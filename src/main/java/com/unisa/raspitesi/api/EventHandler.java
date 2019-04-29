@@ -43,7 +43,10 @@ public class EventHandler {
                     } else {
                         User user = mapper.readValue(result, User.class);
                         if(user.isInside() == true ){
+                            System.out.println("Apro il tornello");
                             //METODO PER APRIRE IL TORNELLO
+                        } else {
+                            System.out.println("utente sta uscendo");
                         }
                         appoggio = user;
                         timeStamp = event.getRead().getTimestamp();
