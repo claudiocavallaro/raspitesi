@@ -47,11 +47,11 @@ public class ReadComponent implements DisposableBean, Runnable {
                     }
                 }
 
-                lista.add(read);
-
             } catch (Exception e){
                 e.printStackTrace();
             }
+
+            lista.add(read);
 
             if(read != null && lista.size() > 0 && condition(read) == true){
                 ReadEvent event = new ReadEvent(read);
