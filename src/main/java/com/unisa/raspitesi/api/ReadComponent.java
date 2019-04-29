@@ -16,7 +16,7 @@ public class ReadComponent implements DisposableBean, Runnable {
     private Thread thread;
     private volatile boolean flag = true;
 
-    private ArrayList<Read> letture = new ArrayList<>();
+    private ArrayList<Read> lista = new ArrayList<>();
 
 
     public ReadComponent(){
@@ -27,8 +27,6 @@ public class ReadComponent implements DisposableBean, Runnable {
 
     @Override
     public void run() {
-        //String lastValue = "";
-        //long time = 0;
         while(flag == true){
 
             Read read = null;
@@ -49,26 +47,16 @@ public class ReadComponent implements DisposableBean, Runnable {
                     }
                 }
 
-                letture.add(read);
+                lista.add(read);
 
             } catch (Exception e){
                 e.printStackTrace();
             }
 
-            //Se il tag l'ho passato meno di 60 secondi prima non fa nessuna richiesta
-            //Successivamente si può aumentare questo tempo
-
-            if(read != null && condition(read) == true){
-                //if(read.getUid().equals(lastValue) && read.getTimestamp() - time < 60000){
-                //    System.out.println("Nothing to publish");
-                //} else {
+            if(read != null && lista.size() > 0 && condition(read) == true){
                 ReadEvent event = new ReadEvent(read);
                 EventPublisherService.eventPublisherService.publishEvent(event);
-                    //lastValue = read.getUid();
-                    //time = read.getTimestamp();
-                //}
             }
-
 
             try {
                 Thread.sleep(2000);
@@ -79,17 +67,19 @@ public class ReadComponent implements DisposableBean, Runnable {
     }
 
     private boolean condition(Read read) {
-        for(Read r : letture){
+        boolean cond = false;
+        for(Read r : lista){
             if (read.getUid().equals(r.getUid())){
-                if (read.getTimestamp() - r.getTimestamp() > 60000){
-                    return true;
+                if (read.getTimestamp() - r.getTimestamp() < 60000){
+                    cond =  false;
                 } else {
-                    return false;
+                    cond = true;
                 }
             }
         }
-        return false;
+        return cond;
     }
+
 
     @Override
     public void destroy() throws Exception {
