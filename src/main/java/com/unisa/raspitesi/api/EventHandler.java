@@ -4,6 +4,7 @@ package com.unisa.raspitesi.api;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
 import com.unisa.raspitesi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 
 @Component
 public class EventHandler {
@@ -21,25 +23,37 @@ public class EventHandler {
     public EventHandler(){}
 
 
+    private ArrayList<Read> readList = new ArrayList<>();
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
 
-        System.out.println(event.getRead() + "----- SENDING GET ------");
-        String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+        readList.add(event.getRead());
 
-        ObjectMapper mapper = new ObjectMapper();
-        try{
-            if (result.equals("Nothing")){
-                System.out.println("No user to display");
+        for(Read r : readList){
+            if(r.getUid().equals(event.getRead().getUid()) && Math.abs(r.getTimestamp() - event.getRead().getTimestamp()) < 60000){
+                System.out.println("no get to send");
             } else {
-                User user = mapper.readValue(result, User.class);
-                System.out.println(user.toString());
-            }
+                System.out.println(event.getRead() + "----- SENDING GET ------");
+                String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
-        }catch (Exception e){
-            e.printStackTrace();
+                ObjectMapper mapper = new ObjectMapper();
+                try{
+                    if (result.equals("Nothing")){
+                        System.out.println("No user to display");
+                    } else if (result.equals("Non ci sono ingressi disponibili")){
+                        System.out.println("Non ci sono ingressi disponibili");
+                    } else {
+                        User user = mapper.readValue(result, User.class);
+                        System.out.println(user.toString());
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
+
 
 
     }
