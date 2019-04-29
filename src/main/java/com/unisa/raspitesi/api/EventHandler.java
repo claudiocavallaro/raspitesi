@@ -26,7 +26,7 @@ public class EventHandler {
 
     private ConcurrentHashMap<String, Long> readList = new ConcurrentHashMap<>();
 
-
+ 
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
@@ -58,7 +58,7 @@ public class EventHandler {
                 } else {
 
                     readList.remove(event.getRead().getUid());
-                    
+
                     System.out.println(event.getRead() + "----- SENDING GET ------");
                     String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
