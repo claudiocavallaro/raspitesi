@@ -4,6 +4,7 @@ package com.unisa.raspitesi.api;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
 import com.unisa.raspitesi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 
 @Component
 public class EventHandler {
@@ -20,12 +22,27 @@ public class EventHandler {
 
     public EventHandler(){}
 
+    public ArrayList<Read> readList = new ArrayList<>();
 
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
-        System.out.println(event.getRead() + "----- SENDING GET ------");
-        String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+
+        Read read = event.getRead();
+        readList.add(read);
+
+        String result = "";
+        for (Read r : readList){
+            if (read.getUid().equals(r.getUid())){
+                if (read.getTimestamp() - r.getTimestamp() < 60000){
+                    System.out.println(event.getRead() + "----- SENDING GET ------");
+                    result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+                } else {
+                    result = "Nothing";
+                }
+            }
+        }
+
 
         ObjectMapper mapper = new ObjectMapper();
         try{

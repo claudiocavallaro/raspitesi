@@ -16,8 +16,6 @@ public class ReadComponent implements DisposableBean, Runnable {
     private Thread thread;
     private volatile boolean flag = true;
 
-    private ArrayList<Read> lista = new ArrayList<>();
-
 
     public ReadComponent(){
         this.thread = new Thread(this);
@@ -51,9 +49,7 @@ public class ReadComponent implements DisposableBean, Runnable {
                 e.printStackTrace();
             }
 
-            lista.add(read);
-
-            if(read != null && lista.size() > 0 && condition(read) == true){
+            if(read != null){
                 ReadEvent event = new ReadEvent(read);
                 EventPublisherService.eventPublisherService.publishEvent(event);
             }
@@ -66,19 +62,7 @@ public class ReadComponent implements DisposableBean, Runnable {
         }
     }
 
-    private boolean condition(Read read) {
-        boolean cond = false;
-        for(Read r : lista){
-            if (read.getUid().equals(r.getUid())){
-                if (read.getTimestamp() - r.getTimestamp() < 60000){
-                    cond =  false;
-                } else {
-                    cond = true;
-                }
-            }
-        }
-        return cond;
-    }
+
 
 
     @Override
