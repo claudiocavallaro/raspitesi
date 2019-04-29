@@ -32,8 +32,6 @@ public class EventHandler {
         try{
             if (result.equals("Nothing")){
                 System.out.println("No user to display");
-            } else if (result.equals("Non ci sono ingressi disponibili")){
-                System.out.println("Non ci sono ingressi disponibili");
             } else {
                 User user = mapper.readValue(result, User.class);
                 System.out.println(user.toString());
