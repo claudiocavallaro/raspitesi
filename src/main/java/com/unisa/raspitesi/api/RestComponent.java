@@ -15,7 +15,7 @@ public class RestComponent {
     private static GpioPinDigitalOutput pin;
 
 
-/*    @GetMapping("/api/restart")
+    @GetMapping("/api/restart")
     public String get(){
 
         Gson gson = new GsonBuilder().create();
@@ -26,8 +26,8 @@ public class RestComponent {
     }
 
 
-    Da testare gpio
-
+    /* Da testare gpio
+    * */
     @RequestMapping("/api/confirm")
     public String getConfirm(){
 
@@ -40,7 +40,5 @@ public class RestComponent {
 
         return "OK";
     }
-
-    */
 
 }
