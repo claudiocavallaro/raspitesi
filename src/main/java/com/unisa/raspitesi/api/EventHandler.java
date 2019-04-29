@@ -55,8 +55,11 @@ public class EventHandler {
                 if(r.getUid().equals(event.getRead().getUid()) && Math.abs(r.getTimestamp() - event.getRead().getTimestamp()) < 60000){
                     System.out.println("no get to send");
                 } else {
-                    readList.remove(r);
-                    readList.remove(event.getRead());
+                    ArrayList<Read> toRemove = new ArrayList<>();
+                    toRemove.add(r);
+                    toRemove.add(event.getRead());
+
+                    readList.removeAll(toRemove);
 
                     System.out.println(event.getRead() + "----- SENDING GET ------");
                     String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
