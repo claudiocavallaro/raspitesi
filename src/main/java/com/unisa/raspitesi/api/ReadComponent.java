@@ -35,8 +35,7 @@ public class ReadComponent implements DisposableBean, Runnable {
 
                 BufferedReader bfr = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 line = bfr.readLine();
-
-                int exit = 1;
+                
                 while ((line = bfr.readLine()) != null) {
                     System.out.println(line);
                     if (!line.equals("No card")) {
