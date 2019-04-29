@@ -4,7 +4,6 @@ package com.unisa.raspitesi.api;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
 import com.unisa.raspitesi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 
 @Component
 public class EventHandler {
@@ -22,38 +20,38 @@ public class EventHandler {
 
     public EventHandler(){}
 
-    public ArrayList<Read> readList = new ArrayList<>();
+    private User appoggio = null;
+    private long timeStamp = 0;
 
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
 
-        Read read = event.getRead();
-        readList.add(read);
+        if(appoggio != null){
+            if((appoggio.getUid().equals(event.getRead().getUid())) && (event.getRead().getTimestamp() - timeStamp < Math.abs(60000))){
+                System.out.println("no get to send");
+            } else {
+                System.out.println(event.getRead() + "----- SENDING GET ------");
+                String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
-        String result = "";
-        for (Read r : readList){
-            if (read.getUid().equals(r.getUid())){
-                if (read.getTimestamp() - r.getTimestamp() < 60000){
-                    System.out.println(event.getRead() + "----- SENDING GET ------");
-                    result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
-                } else {
-                    result = "Nothing";
+                ObjectMapper mapper = new ObjectMapper();
+                try{
+                    if (result.equals("Nothing")){
+                        System.out.println("No user to display");
+                    } else {
+                        User user = mapper.readValue(result, User.class);
+
+                        if (user.isInside()){
+                            appoggio = user;
+                            timeStamp = event.getRead().getTimestamp();
+                        }
+                        System.out.println(user.toString());
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
-        }
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        try{
-            if (result.equals("Nothing")){
-                System.out.println("No user to display");
-            } else {
-                User user = mapper.readValue(result, User.class);
-                System.out.println(user.toString());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
 

@@ -14,7 +14,4 @@ public class Read {
         this.timestamp = System.currentTimeMillis();
     }
 
-
-
-
 }
