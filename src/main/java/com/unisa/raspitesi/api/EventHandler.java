@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class EventHandler {
@@ -23,14 +24,14 @@ public class EventHandler {
     public EventHandler(){}
 
 
-    private ArrayList<Read> readList = new ArrayList<>();
+    private ConcurrentHashMap<String, Long> readList = new ConcurrentHashMap<>();
 
 
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
 
-        readList.add(event.getRead());
+        readList.put(event.getRead().getUid(), event.getRead().getTimestamp());
 
         if(readList.size() == 1){
             System.out.println(event.getRead() + "----- SENDING GET ------");
@@ -51,16 +52,13 @@ public class EventHandler {
                 e.printStackTrace();
             }
         } else {
-            for(Read r : readList){
-                if(r.getUid().equals(event.getRead().getUid()) && Math.abs(r.getTimestamp() - event.getRead().getTimestamp()) < 60000){
+            for(int i = 0 ; i < readList.size() ; i++){
+                if (readList.containsKey(event.getRead().getUid()) && (readList.get(event.getRead().getUid()) - event.getRead().getTimestamp() < 60000)){
                     System.out.println("no get to send");
                 } else {
-                    ArrayList<Read> toRemove = new ArrayList<>();
-                    toRemove.add(r);
-                    toRemove.add(event.getRead());
 
-                    readList.removeAll(toRemove);
-
+                    readList.remove(event.getRead().getUid());
+                    
                     System.out.println(event.getRead() + "----- SENDING GET ------");
                     String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
