@@ -24,35 +24,62 @@ public class EventHandler {
 
 
     private ArrayList<Read> readList = new ArrayList<>();
+
+
     @Async
     @EventListener
     public void readEvent(ReadEvent event){
 
         readList.add(event.getRead());
 
-        for(Read r : readList){
-            if(r.getUid().equals(event.getRead().getUid()) && Math.abs(r.getTimestamp() - event.getRead().getTimestamp()) < 60000){
-                System.out.println("no get to send");
-            } else {
-                System.out.println(event.getRead() + "----- SENDING GET ------");
-                String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+        if(readList.size() == 1){
+            System.out.println(event.getRead() + "----- SENDING GET ------");
+            String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
-                ObjectMapper mapper = new ObjectMapper();
-                try{
-                    if (result.equals("Nothing")){
-                        System.out.println("No user to display");
-                    } else if (result.equals("Non ci sono ingressi disponibili")){
-                        System.out.println("Non ci sono ingressi disponibili");
-                    } else {
-                        User user = mapper.readValue(result, User.class);
-                        System.out.println(user.toString());
+            ObjectMapper mapper = new ObjectMapper();
+            try{
+                if (result.equals("Nothing")){
+                    System.out.println("No user to display");
+                } else if (result.equals("Non ci sono ingressi disponibili")){
+                    System.out.println("Non ci sono ingressi disponibili");
+                } else {
+                    User user = mapper.readValue(result, User.class);
+                    System.out.println(user.toString());
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            for(Read r : readList){
+                if(r.getUid().equals(event.getRead().getUid()) && Math.abs(r.getTimestamp() - event.getRead().getTimestamp()) < 60000){
+                    System.out.println("no get to send");
+                } else {
+                    readList.remove(r);
+                    readList.remove(event.getRead());
+
+                    System.out.println(event.getRead() + "----- SENDING GET ------");
+                    String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    try{
+                        if (result.equals("Nothing")){
+                            System.out.println("No user to display");
+                        } else if (result.equals("Non ci sono ingressi disponibili")){
+                            System.out.println("Non ci sono ingressi disponibili");
+                        } else {
+                            User user = mapper.readValue(result, User.class);
+                            System.out.println(user.toString());
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
             }
         }
+
+
 
 
 
