@@ -8,12 +8,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 @Component
 public class ReadComponent implements DisposableBean, Runnable {
 
     private Thread thread;
     private volatile boolean flag = true;
+
+    private ArrayList<Read> letture = new ArrayList<>();
 
 
     public ReadComponent(){
@@ -46,6 +49,7 @@ public class ReadComponent implements DisposableBean, Runnable {
                     }
                 }
 
+                letture.add(read);
 
             } catch (Exception e){
                 e.printStackTrace();
@@ -54,15 +58,17 @@ public class ReadComponent implements DisposableBean, Runnable {
             //Se il tag l'ho passato meno di 60 secondi prima non fa nessuna richiesta
             //Successivamente si può aumentare questo tempo
 
-            if(read != null){
+            if(read != null && condition(read) == true){
                 //if(read.getUid().equals(lastValue) && read.getTimestamp() - time < 60000){
                 //    System.out.println("Nothing to publish");
                 //} else {
-                    ReadEvent event = new ReadEvent(read);
-                    EventPublisherService.eventPublisherService.publishEvent(event);
+                ReadEvent event = new ReadEvent(read);
+                EventPublisherService.eventPublisherService.publishEvent(event);
                     //lastValue = read.getUid();
                     //time = read.getTimestamp();
                 //}
+            } else {
+                System.out.println("Nothing to publish");
             }
 
 
@@ -72,6 +78,19 @@ public class ReadComponent implements DisposableBean, Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean condition(Read read) {
+        for(Read r : letture){
+            if (read.getUid().equals(r.getUid())){
+                if (read.getTimestamp() - r.getTimestamp() > 60000){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
