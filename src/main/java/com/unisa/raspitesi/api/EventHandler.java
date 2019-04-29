@@ -18,75 +18,37 @@ import javax.annotation.PostConstruct;
 public class EventHandler {
 
 
-    public EventHandler() {
-    }
+    public EventHandler(){}
 
-    private User appoggio = null;
-    private long timeStamp = 0;
 
     @Async
     @EventListener
-    public void readEvent(ReadEvent event) {
+    public void readEvent(ReadEvent event){
 
-        if (appoggio != null) {
-            if ((appoggio.getUid().equals(event.getRead().getUid())) && (event.getRead().getTimestamp() - timeStamp < Math.abs(60000))) {
+        System.out.println(event.getRead() + "----- SENDING GET ------");
+        String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
-                System.out.println("no get to send");
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            if (result.equals("Nothing")){
+                System.out.println("No user to display");
             } else {
-                System.out.println(event.getRead() + "----- SENDING GET ------");
-                String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
-
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    if (result.equals("Nothing")) {
-                        System.out.println("No user to display");
-                    } else {
-                        User user = mapper.readValue(result, User.class);
-                        if(user.isInside() == true ){
-                            System.out.println("Apro il tornello");
-                            //METODO PER APRIRE IL TORNELLO
-                        } else {
-                            System.out.println("utente sta uscendo");
-                        }
-                        appoggio = user;
-                        timeStamp = event.getRead().getTimestamp();
-                        System.out.println(user.toString());
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                User user = mapper.readValue(result, User.class);
+                System.out.println(user.toString());
             }
-        } else {
-            System.out.println(event.getRead() + "----- SENDING GET ------");
-            String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
 
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                if (result.equals("Nothing")) {
-                    System.out.println("No user to display");
-                } else {
-                    User user = mapper.readValue(result, User.class);
-
-                    if (user.isInside()) {
-                        appoggio = user;
-                        timeStamp = event.getRead().getTimestamp();
-                    }
-                    System.out.println(user.toString());
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
 
     }
 
     private String sendGet(String getUrl, String line) {
         String noresult = "no results from sendGet on " + getUrl + " - check logs";
         int numTry = 5;
-        while (numTry > 0) {
-            try {
+        while(numTry > 0) {
+            try{
                 com.mashape.unirest.http.HttpResponse<String> R = Unirest.get(getUrl)
                         .header("Content-Type", "application/json")
                         .header("Cache-Control", "no-cache")
@@ -95,8 +57,8 @@ public class EventHandler {
                 return R.getBody().toString();
 
             } catch (Exception e) {
-                numTry--;
-                if (numTry == 0) {
+                numTry --;
+                if(numTry == 0) {
                     e.printStackTrace();
                 }
             }

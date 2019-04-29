@@ -41,7 +41,6 @@ public class ReadComponent implements DisposableBean, Runnable {
                     System.out.println(line);
                     if (!line.equals("No card")) {
                         read = new Read(line);
-                        read.setTimestamp(System.currentTimeMillis());
                     }
                 }
 
