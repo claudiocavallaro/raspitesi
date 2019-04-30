@@ -15,4 +15,9 @@ public class Read {
     }
 
     public Read(){}
+
+
+    public String toString(){
+        return "UID: " + uid + " timestamp : " + timestamp;
+    }
 }

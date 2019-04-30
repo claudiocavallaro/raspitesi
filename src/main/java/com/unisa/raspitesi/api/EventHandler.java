@@ -57,6 +57,7 @@ public class EventHandler {
                     lastExit.setTimestamp(event.getRead().getTimestamp());
                 }
             } else {
+                System.out.println("LAST EXIT " + lastExit.toString());
                 if (event.getRead().getUid().equals(lastExit.getUid()) && Math.abs(event.getRead().getTimestamp() - lastExit.getTimestamp()) < 6000){
                     System.out.println("Utente appena uscito");
                 } else {
