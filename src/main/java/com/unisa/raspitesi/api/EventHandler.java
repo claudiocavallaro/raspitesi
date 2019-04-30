@@ -49,13 +49,17 @@ public class EventHandler {
                 user = completeSend(event);
             } else {
                 if (event.getRead().equals(last.getUid())){
+                    System.out.println("primo if");
                     if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
+                        System.out.println("secondo if");
                         System.out.println("No get to send");
                     } else {
+                        System.out.println("secondo else");
                         recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                         user = completeSend(event);
                     }
                 } else {
+                    System.out.println("primo else");
                     recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                     user = completeSend(event);
                 }
