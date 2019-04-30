@@ -34,6 +34,7 @@ public class EventHandler {
 
         User user = null;
 
+        System.out.println(recordList.keySet().toString());
 
         if (recordList.isEmpty()) {
             System.out.println(recordList.keySet().toString());
@@ -53,11 +54,10 @@ public class EventHandler {
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
-
-
+                    System.out.println("Utente uscito");
                 }
             } else {
-                
+
                 recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                 user = completeSend(event);
 
