@@ -48,6 +48,7 @@ public class EventHandler {
                 if (Math.abs(timeArrive - recordValue) < 6000){
                     System.out.println("no get to send");
                 } else {
+                    
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
                 }
