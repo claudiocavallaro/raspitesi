@@ -35,8 +35,10 @@ public class EventHandler {
 
         if (recordList.isEmpty()) {
 
-            recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
             user = completeSend(event);
+            if(user != null){
+                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+            }
 
         } else {
             if (recordList.containsKey(event.getRead().getUid())) {
@@ -55,8 +57,11 @@ public class EventHandler {
                 }
 
             } else {
-                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+
                 user = completeSend(event);
+                if(user != null){
+                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                }
 
             }
         }
