@@ -34,20 +34,25 @@ public class EventHandler {
 
         User user = null;
 
-        Read last = new Read("");
+        Read last = null;
         //System.out.println(recordList.keySet().toString());
 
         if (recordList.isEmpty()) {
-            if (event.getRead().equals(last.getUid())){
-                if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
-                    System.out.println("No get to send");
+            if (last == null){
+                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                user = completeSend(event);
+            } else {
+                if (event.getRead().equals(last.getUid())){
+                    if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
+                        System.out.println("No get to send");
+                    } else {
+                        recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                        user = completeSend(event);
+                    }
                 } else {
                     recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                     user = completeSend(event);
                 }
-            } else {
-                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-                user = completeSend(event);
             }
 
         } else {
