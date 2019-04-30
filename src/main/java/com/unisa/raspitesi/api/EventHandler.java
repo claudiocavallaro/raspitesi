@@ -57,9 +57,8 @@ public class EventHandler {
 
         } else {
             if (recordList.containsKey(event.getRead().getUid())) {
-                System.out.println(recordList.keySet().toString());
-                System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
 
+                System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
                 long timeArrive = recordList.get(event.getRead().getUid());
                 long recordValue = event.getRead().getTimestamp();
                 System.out.println("Valore di confronto " + event.getRead().getTimestamp());
@@ -69,7 +68,8 @@ public class EventHandler {
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
-                    last = event.getRead();
+                    last = new Read(event.getRead().getUid());
+                    last.setTimestamp(event.getRead().getTimestamp());
                     System.out.println("Utente uscito");
                 }
             } else {
