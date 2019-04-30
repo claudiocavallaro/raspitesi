@@ -35,7 +35,7 @@ public class EventHandler {
         User user = null;
 
         Read last = null;
-        //System.out.println(recordList.keySet().toString());
+        System.out.println(last.toString());
 
         if (recordList.isEmpty()) {
             if (last == null){
@@ -70,6 +70,7 @@ public class EventHandler {
                     recordList.remove(event.getRead().getUid());
                     last = new Read(event.getRead().getUid());
                     last.setTimestamp(event.getRead().getTimestamp());
+                    System.out.println(last.toString());
                     System.out.println("Utente uscito");
                 }
             } else {
