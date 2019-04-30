@@ -34,7 +34,7 @@ public class EventHandler {
 
         User user = null;
 
-        Read last = null;
+        Read last = new Read("");
         //System.out.println(recordList.keySet().toString());
 
         if (recordList.isEmpty()) {
