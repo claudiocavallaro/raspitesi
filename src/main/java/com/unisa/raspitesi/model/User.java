@@ -18,6 +18,7 @@ public class User {
     @JsonCreator
     public User(){}
 
+    private long timeStamp;
 
     public User(String name, String bornDate, int ingressi, String uid){
         this.name = name;
