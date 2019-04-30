@@ -39,7 +39,7 @@ public class EventHandler {
             user = completeSend(event);
         } else {
             if (recordList.containsKey(event.getRead().getUid())){
-                long timeArrive = event.getRead().getTimestamp();
+                long timeArrive = recordList.get(event.getRead().getUid());
                 long recordValue = event.getRead().getTimestamp();
                 if (Math.abs(timeArrive - recordValue) < 6000){
                     System.out.println("no get to send");
