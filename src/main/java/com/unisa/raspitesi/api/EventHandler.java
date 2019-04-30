@@ -39,7 +39,7 @@ public class EventHandler {
         if(last == null){
             System.out.println("null");
         } else {
-            System.out.println(last.toString());
+            System.out.println("----LAST -----" + last.toString());
         }
 
 
