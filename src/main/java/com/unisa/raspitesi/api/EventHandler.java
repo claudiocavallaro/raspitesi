@@ -34,52 +34,43 @@ public class EventHandler {
 
         User user = null;
 
-        Read lastExit = null;
 
-        if (recordList.isEmpty()){
+        if (recordList.isEmpty()) {
             System.out.println(recordList.keySet().toString());
             recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
             user = completeSend(event);
         } else {
-            if (recordList.containsKey(event.getRead().getUid())){
+            if (recordList.containsKey(event.getRead().getUid())) {
                 System.out.println(recordList.keySet().toString());
-                //System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
+                System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
 
                 long timeArrive = recordList.get(event.getRead().getUid());
                 long recordValue = event.getRead().getTimestamp();
-                //System.out.println("Valore di confronto " + event.getRead().getTimestamp());
+                System.out.println("Valore di confronto " + event.getRead().getTimestamp());
 
-                if (Math.abs(timeArrive - recordValue) < 6000){
+                if (Math.abs(timeArrive - recordValue) < 6000) {
                     System.out.println("no get to send");
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
-                    lastExit = new Read(event.getRead().getUid());
-                    lastExit.setTimestamp(event.getRead().getTimestamp());
 
-                    System.out.println(recordList.keySet().toString());
 
                 }
             } else {
-
-                System.out.println("LAST EXIT " + lastExit.toString());
-                if (event.getRead().getUid().equals(lastExit.getUid()) && Math.abs(event.getRead().getTimestamp() - lastExit.getTimestamp()) < 6000){
-                    System.out.println("Utente appena uscito");
-                } else {
-                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-                    user = completeSend(event);
-                }
+                
+                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                user = completeSend(event);
 
             }
         }
 
-        if (user != null){
+        if (user != null) {
             System.out.println("Apro tornello");
         }
 
     }
 
-    public User completeSend(ReadEvent event){
+    public User completeSend(ReadEvent event) {
         System.out.println(event.getRead() + "----- SENDING GET ------");
         String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
         User user = null;
