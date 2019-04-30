@@ -27,6 +27,7 @@ public class EventHandler {
 
     private ConcurrentHashMap<String, Long> recordList = new ConcurrentHashMap<>();
 
+    private Read last = null;
 
     @Async
     @EventListener
@@ -34,16 +35,15 @@ public class EventHandler {
 
         User user = null;
 
-        /*Read last = null;
         if(last == null){
             System.out.println("null");
         } else {
             System.out.println(last.toString());
-        }*/
+        }
 
 
         if (recordList.isEmpty()) {
-        /*    if (last == null){
+            if (last == null){
                 recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                 user = completeSend(event);
             } else {
@@ -54,11 +54,11 @@ public class EventHandler {
                         recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                         user = completeSend(event);
                     }
-                } else {*/
+                } else {
                     recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                     user = completeSend(event);
-        //        }
-        //    }
+                }
+            }
 
         } else {
             if (recordList.containsKey(event.getRead().getUid())) {
@@ -73,24 +73,24 @@ public class EventHandler {
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
-                    //last = new Read(event.getRead().getUid());
-                    //last.setTimestamp(event.getRead().getTimestamp());
-                    //System.out.println(last.toString());
+                    last = new Read(event.getRead().getUid());
+                    last.setTimestamp(event.getRead().getTimestamp());
+                    System.out.println(last.toString());
                     System.out.println("Utente uscito");
                 }
             } else {
 
-                /*if (event.getRead().equals(last.getUid())){
+                if (event.getRead().equals(last.getUid())){
                     if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
                         System.out.println("No get to send");
                     } else {
                         recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                         user = completeSend(event);
                     }
-                } else {*/
+                } else {
                     recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
                     user = completeSend(event);
-                //}
+                }
 
             }
         }
