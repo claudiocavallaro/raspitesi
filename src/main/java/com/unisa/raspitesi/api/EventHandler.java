@@ -58,7 +58,7 @@ public class EventHandler {
                     lastExit.setTimestamp(event.getRead().getTimestamp());
 
                     System.out.println(recordList.keySet().toString());
-                    
+
                 }
             } else {
 
