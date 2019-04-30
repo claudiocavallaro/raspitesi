@@ -35,7 +35,12 @@ public class EventHandler {
         User user = null;
 
         Read last = null;
-        System.out.println(last.toString());
+        if(last == null){
+            System.out.println("null");
+        } else {
+            System.out.println(last.toString());
+        }
+
 
         if (recordList.isEmpty()) {
             if (last == null){
