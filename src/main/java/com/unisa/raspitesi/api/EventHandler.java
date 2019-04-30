@@ -34,12 +34,22 @@ public class EventHandler {
 
         User user = null;
 
-        System.out.println(recordList.keySet().toString());
+        Read last = null;
+        //System.out.println(recordList.keySet().toString());
 
         if (recordList.isEmpty()) {
-            System.out.println(recordList.keySet().toString());
-            recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-            user = completeSend(event);
+            if (event.getRead().equals(last.getUid())){
+                if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
+                    System.out.println("No get to send");
+                } else {
+                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                    user = completeSend(event);
+                }
+            } else {
+                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                user = completeSend(event);
+            }
+
         } else {
             if (recordList.containsKey(event.getRead().getUid())) {
                 System.out.println(recordList.keySet().toString());
@@ -54,12 +64,22 @@ public class EventHandler {
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
+                    last = event.getRead();
                     System.out.println("Utente uscito");
                 }
             } else {
 
-                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-                user = completeSend(event);
+                if (event.getRead().equals(last.getUid())){
+                    if (Math.abs(event.getRead().getTimestamp() - last.getTimestamp()) < 6000){
+                        System.out.println("No get to send");
+                    } else {
+                        recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                        user = completeSend(event);
+                    }
+                } else {
+                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                    user = completeSend(event);
+                }
 
             }
         }
