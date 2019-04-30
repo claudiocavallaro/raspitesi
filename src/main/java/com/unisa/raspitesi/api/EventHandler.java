@@ -53,7 +53,7 @@ public class EventHandler {
 
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
-                    lastExit.setUid(event.getRead().getUid());
+                    lastExit = new Read(event.getRead().getUid());
                     lastExit.setTimestamp(event.getRead().getTimestamp());
                 }
             } else {
