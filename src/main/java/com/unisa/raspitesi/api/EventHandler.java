@@ -32,31 +32,37 @@ public class EventHandler {
     @EventListener
     public void readEvent(ReadEvent event) {
 
+        User user = null;
+
         if (recordList.isEmpty()){
             recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-            completeSend(event);
+            user = completeSend(event);
         } else {
             if (recordList.containsKey(event.getRead().getUid())){
                 long timeArrive = event.getRead().getTimestamp();
                 long recordValue = event.getRead().getTimestamp();
-                if (Math.abs(timeArrive - recordValue) < 60000){
+                if (Math.abs(timeArrive - recordValue) < 6000){
                     System.out.println("no get to send");
                 } else {
-                    completeSend(event);
+                    user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
                 }
             } else {
                 recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-                completeSend(event);
+                user = completeSend(event);
             }
+        }
+
+        if (user != null){
+            System.out.println("Apro tornello");
         }
 
     }
 
-    public void completeSend(ReadEvent event){
+    public User completeSend(ReadEvent event){
         System.out.println(event.getRead() + "----- SENDING GET ------");
         String result = sendGet("http://192.168.1.92:8080/api/entrance", event.getRead().getUid());
-
+        User user = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
             if (result.equals("Nothing")) {
@@ -64,13 +70,14 @@ public class EventHandler {
             } else if (result.equals("Non ci sono ingressi disponibili")) {
                 System.out.println("Non ci sono ingressi disponibili");
             } else {
-                User user = mapper.readValue(result, User.class);
+                user = mapper.readValue(result, User.class);
                 System.out.println(user.toString());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return user;
     }
 
     private String sendGet(String getUrl, String line) {
