@@ -34,6 +34,8 @@ public class EventHandler {
 
         User user = null;
 
+        Read lastExit = null;
+
         if (recordList.isEmpty()){
             recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
             user = completeSend(event);
@@ -48,13 +50,20 @@ public class EventHandler {
                 if (Math.abs(timeArrive - recordValue) < 6000){
                     System.out.println("no get to send");
                 } else {
-                    
+
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
+                    lastExit.setUid(event.getRead().getUid());
+                    lastExit.setTimestamp(event.getRead().getTimestamp());
                 }
             } else {
-                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
-                user = completeSend(event);
+                if (event.getRead().getUid().equals(lastExit.getUid()) && Math.abs(event.getRead().getTimestamp() - lastExit.getTimestamp()) < 6000){
+                    System.out.println("Utente appena uscito");
+                } else {
+                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                    user = completeSend(event);
+                }
+
             }
         }
 
