@@ -35,6 +35,7 @@ public class EventHandler {
 
         User user = null;
 
+        System.out.println("KEY SET : " + recordList.keySet().toString());
         if(last == null){
             System.out.println("null");
         } else {
