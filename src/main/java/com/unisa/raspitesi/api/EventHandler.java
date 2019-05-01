@@ -31,13 +31,15 @@ public class EventHandler {
     private ConcurrentHashMap<String, Long> recordList = new ConcurrentHashMap<>();
     private Read lastExit = null;
 
+    private long waitTime = 60 * 1000;
+
     @Async
     @EventListener
     public void readEvent(ReadEvent event) {
 
         User user = null;
 
-        System.out.println(recordList.keySet());
+        //System.out.println(recordList.keySet());
 
         /* Se la lista dei record è vuota vuol dire che nella stanza non c'è nessuno.
            Se non c'è nessuno quindi controllo l'ultimo andato via,
@@ -57,7 +59,7 @@ public class EventHandler {
                 //System.out.println("----NOW----" + now.toString());
                 //System.out.println("----LAST FROM ENTER----" + lastExit.toString());
                 if (now.getUid().equals(lastExit.getUid())){
-                    if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
+                    if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < waitTime){
                         System.out.println("can't enter");
                     } else {
                         user = completeSend(event);
@@ -90,7 +92,7 @@ public class EventHandler {
                 long recordValue = event.getRead().getTimestamp();
                 //System.out.println("Valore di confronto " + event.getRead().getTimestamp());
 
-                if (Math.abs(timeArrive - recordValue) < 6000) {
+                if (Math.abs(timeArrive - recordValue) < waitTime) {
                     System.out.println("no get to send");
                 } else {
                     user = completeSend(event);
@@ -112,7 +114,7 @@ public class EventHandler {
 
                     Read now = event.getRead();
                     if (now.getUid().equals(lastExit.getUid())){
-                        if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
+                        if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < waitTime){
                             System.out.println("can't enter");
                         } else {
                             user = completeSend(event);
