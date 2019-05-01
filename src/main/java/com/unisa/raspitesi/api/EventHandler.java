@@ -35,6 +35,8 @@ public class EventHandler {
 
         Read lastExit = null;
 
+        System.out.println(recordList.keySet());
+
         /*
         * */
         if (recordList.isEmpty()) {
