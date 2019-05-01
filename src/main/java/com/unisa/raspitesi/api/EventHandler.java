@@ -77,7 +77,7 @@ public class EventHandler {
              *  ed aggiorno l'oggetto lastExit.
              *
              *  Se la lettura non proviene da uno all'interno controllo lastExit come nel metodo precedente.
-             * 
+             *
              */
 
             if (recordList.containsKey(event.getRead().getUid())) {
