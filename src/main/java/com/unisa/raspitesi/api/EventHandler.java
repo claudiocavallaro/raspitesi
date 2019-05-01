@@ -33,14 +33,44 @@ public class EventHandler {
 
         User user = null;
 
-        if (recordList.isEmpty()) {
+        Read lastExit = null;
 
-            user = completeSend(event);
-            if(user != null){
-                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+        /*
+        * */
+        if (recordList.isEmpty()) {
+            if(lastExit == null){
+                user = completeSend(event);
+                if(user != null){
+                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                }
+            } else {
+
+                Read now = event.getRead();
+                if (now.getUid().equals(lastExit.getUid())){
+                    if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
+                        System.out.println("can't enter");
+                    } else {
+                        user = completeSend(event);
+                        if(user != null){
+                            recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                        }
+                    }
+                } else {
+                    user = completeSend(event);
+                    if(user != null){
+                        recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                    }
+                }
+
             }
 
         } else {
+
+            /*
+             *
+             *
+             */
+
             if (recordList.containsKey(event.getRead().getUid())) {
 
                 System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
@@ -53,14 +83,37 @@ public class EventHandler {
                 } else {
                     user = completeSend(event);
                     recordList.remove(event.getRead().getUid());
+                    lastExit = new Read(event.getRead().getUid());
+                    lastExit.setTimestamp(event.getRead().getTimestamp());
                     System.out.println("Utente uscito");
                 }
 
             } else {
 
-                user = completeSend(event);
-                if(user != null){
-                    recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                if(lastExit == null){
+                    user = completeSend(event);
+                    if(user != null){
+                        recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                    }
+                } else {
+
+                    Read now = event.getRead();
+                    if (now.getUid().equals(lastExit.getUid())){
+                        if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
+                            System.out.println("can't enter");
+                        } else {
+                            user = completeSend(event);
+                            if(user != null){
+                                recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                            }
+                        }
+                    } else {
+                        user = completeSend(event);
+                        if(user != null){
+                            recordList.put(event.getRead().getUid(), event.getRead().getTimestamp());
+                        }
+                    }
+
                 }
 
             }
