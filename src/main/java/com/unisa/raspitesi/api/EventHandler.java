@@ -4,6 +4,7 @@ package com.unisa.raspitesi.api;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import com.pi4j.io.gpio.*;
 import com.unisa.raspitesi.model.Read;
 import com.unisa.raspitesi.model.ReadEvent;
 import com.unisa.raspitesi.model.User;
@@ -19,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class EventHandler {
+
+    private static GpioPinDigitalOutput pin;
 
 
     public EventHandler() {
@@ -131,6 +134,18 @@ public class EventHandler {
 
         if (user != null) {
             System.out.println("Apro tornello");
+            if (pin == null) {
+                GpioController gpio = GpioFactory.getInstance();
+                pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "LED", PinState.LOW);
+            }
+
+            pin.toggle();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            pin.toggle();
         }
 
     }
