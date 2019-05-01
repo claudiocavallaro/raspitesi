@@ -33,7 +33,7 @@ public class RestComponent {
 
         if (pin == null) {
             GpioController gpio = GpioFactory.getInstance();
-            pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_17, "LED", PinState.LOW);
+            pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "LED", PinState.LOW);
         }
 
         pin.toggle();
