@@ -36,8 +36,12 @@ public class EventHandler {
 
         System.out.println(recordList.keySet());
 
-        /*
+        /* Se la lista dei record è vuota vuol dire che nella stanza non c'è nessuno.
+           Se non c'è nessuno quindi controllo l'ultimo andato via,
+           se l'ultimo che è andato via è quello che ora sta arrivando controllo
+           quanto tempo fa è andato via
         * */
+
         if (recordList.isEmpty()) {
             if(lastExit == null){
                 user = completeSend(event);
@@ -47,8 +51,8 @@ public class EventHandler {
             } else {
 
                 Read now = event.getRead();
-                System.out.println("----NOW----" + now.toString());
-                System.out.println("----LAST FROM ENTER----" + lastExit.toString());
+                //System.out.println("----NOW----" + now.toString());
+                //System.out.println("----LAST FROM ENTER----" + lastExit.toString());
                 if (now.getUid().equals(lastExit.getUid())){
                     if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
                         System.out.println("can't enter");
@@ -69,9 +73,11 @@ public class EventHandler {
 
         } else {
 
-            /*
+            /*  Se la palestra non è vuota e la lettura proviene da uno all'interno lo faccio uscire
+             *  ed aggiorno l'oggetto lastExit.
              *
-             *
+             *  Se la lettura non proviene da uno all'interno controllo lastExit come nel metodo precedente.
+             * 
              */
 
             if (recordList.containsKey(event.getRead().getUid())) {
@@ -123,9 +129,9 @@ public class EventHandler {
             }
         }
 
-        //if (user != null) {
-        //    System.out.println("Apro tornello");
-        //}
+        if (user != null) {
+            System.out.println("Apro tornello");
+        }
 
     }
 
