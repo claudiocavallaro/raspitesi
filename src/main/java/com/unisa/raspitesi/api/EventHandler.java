@@ -26,14 +26,13 @@ public class EventHandler {
 
 
     private ConcurrentHashMap<String, Long> recordList = new ConcurrentHashMap<>();
+    private Read lastExit = null;
 
     @Async
     @EventListener
     public void readEvent(ReadEvent event) {
 
         User user = null;
-
-        Read lastExit = null;
 
         System.out.println(recordList.keySet());
 
