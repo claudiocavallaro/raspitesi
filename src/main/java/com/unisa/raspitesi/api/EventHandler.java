@@ -46,6 +46,8 @@ public class EventHandler {
             } else {
 
                 Read now = event.getRead();
+                System.out.println("----NOW----" + now.toString());
+                System.out.println("----LAST FROM ENTER----" + lastExit.toString());
                 if (now.getUid().equals(lastExit.getUid())){
                     if (Math.abs(now.getTimestamp() - lastExit.getTimestamp()) < 6000){
                         System.out.println("can't enter");
@@ -73,10 +75,10 @@ public class EventHandler {
 
             if (recordList.containsKey(event.getRead().getUid())) {
 
-                System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
+                //System.out.println("Valore già registrato " + recordList.get(event.getRead().getUid()));
                 long timeArrive = recordList.get(event.getRead().getUid());
                 long recordValue = event.getRead().getTimestamp();
-                System.out.println("Valore di confronto " + event.getRead().getTimestamp());
+                //System.out.println("Valore di confronto " + event.getRead().getTimestamp());
 
                 if (Math.abs(timeArrive - recordValue) < 6000) {
                     System.out.println("no get to send");
@@ -85,6 +87,7 @@ public class EventHandler {
                     recordList.remove(event.getRead().getUid());
                     lastExit = new Read(event.getRead().getUid());
                     lastExit.setTimestamp(event.getRead().getTimestamp());
+                    System.out.println("----LAST-----" + lastExit.toString());
                     System.out.println("Utente uscito");
                 }
 
@@ -119,9 +122,9 @@ public class EventHandler {
             }
         }
 
-        if (user != null) {
-            System.out.println("Apro tornello");
-        }
+        //if (user != null) {
+        //    System.out.println("Apro tornello");
+        //}
 
     }
 
