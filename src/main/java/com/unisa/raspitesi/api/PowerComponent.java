@@ -13,7 +13,7 @@ public class PowerComponent implements MqttCallback {
 
     public PowerComponent(){
         try {
-            client = new MqttClient("tcp://192.168.1.111:1883", "Sending");
+            client = new MqttClient("tcp://localhost:1883", "Sending");
             client.connect();
             client.setCallback(this);
             client.subscribe("tele/spow/SENSOR");
@@ -44,6 +44,8 @@ public class PowerComponent implements MqttCallback {
         int power = JsonPath.read(json,pathPower);
 
         Power powerObj = new Power(energy, current, power);
+
+        System.out.println("--- FROM COMPONENT " + powerObj);
 
         PowerEvent powerEvent = new PowerEvent(powerObj);
         EventPublisherService.eventPublisherService.publishEvent(powerEvent);
