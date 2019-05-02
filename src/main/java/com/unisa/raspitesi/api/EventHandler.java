@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.pi4j.io.gpio.*;
-import com.unisa.raspitesi.model.Read;
-import com.unisa.raspitesi.model.ReadEvent;
-import com.unisa.raspitesi.model.User;
+import com.unisa.raspitesi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
@@ -21,11 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class EventHandler {
 
-    private static GpioPinDigitalOutput pin;
-
 
     public EventHandler() {
     }
+
+    //*************************** READ EVENT **************************************
+
+    private static GpioPinDigitalOutput pin;
 
 
     private ConcurrentHashMap<String, Long> recordList = new ConcurrentHashMap<>();
@@ -193,5 +193,16 @@ public class EventHandler {
             }
         }
         return noresult;
+    }
+
+
+
+    //*************************** POWER EVENT ***************************
+
+    @Async
+    @EventListener
+    public void powerPusblish(PowerEvent powerEvent){
+        Power power = powerEvent.getPower();
+        System.out.println(power.toString());
     }
 }
