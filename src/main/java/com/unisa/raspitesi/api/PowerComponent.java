@@ -35,7 +35,7 @@ public class PowerComponent implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
 
         String json = mqttMessage.toString();
-        System.out.println(json);
+        //System.out.println(json);
 
         String pathEnergy = "$.ENERGY.Voltage";
         String pathCurrent = "$.ENERGY.Current";
@@ -47,7 +47,7 @@ public class PowerComponent implements MqttCallback {
 
         Power powerObj = new Power(energy, current, power);
 
-        System.out.println("--- FROM COMPONENT " + powerObj);
+        //System.out.println("--- FROM COMPONENT " + powerObj);
 
         PowerEvent powerEvent = new PowerEvent(powerObj);
         EventPublisherService.eventPublisherService.publishEvent(powerEvent);

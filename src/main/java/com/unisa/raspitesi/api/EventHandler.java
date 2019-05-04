@@ -204,5 +204,36 @@ public class EventHandler {
     public void powerPusblish(PowerEvent powerEvent){
         Power power = powerEvent.getPower();
         System.out.println(power.toString());
+
+        System.out.println("----- SENDING GET ------");
+        String result = sendGetPower("http://192.168.1.92:8080/api/power", powerEvent.getPower());
+    }
+
+    private String sendGetPower(String s, Power power) {
+        String voltage = String.valueOf(power.getVoltage());
+        String current = String.valueOf(power.getCurrent());
+        String powerString = String.valueOf(power.getPower());
+
+        String noresult = "no results from sendGet on " + s + " - check logs";
+        int numTry = 5;
+        while (numTry > 0) {
+            try {
+                com.mashape.unirest.http.HttpResponse<String> R = Unirest.get(s)
+                        .header("Content-Type", "application/json")
+                        .header("Cache-Control", "no-cache")
+                        .queryString("voltage", voltage)
+                        .queryString("current", current)
+                        .queryString("power", powerString)
+                        .asString();
+                return R.getBody().toString();
+
+            } catch (Exception e) {
+                numTry--;
+                if (numTry == 0) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return noresult;
     }
 }
