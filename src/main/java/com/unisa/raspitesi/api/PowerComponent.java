@@ -7,13 +7,9 @@ import com.unisa.raspitesi.model.PowerEvent;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
-@Component
 public class PowerComponent implements MqttCallback {
 
-
-    MqttComponent component;
-
-    public PowerComponent(){
+    public PowerComponent(MqttComponent component){
         try {
             MqttClient client = component.getClient();
             client.setCallback(this);

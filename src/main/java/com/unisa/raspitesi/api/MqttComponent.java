@@ -14,5 +14,7 @@ public class MqttComponent {
     public MqttComponent() throws MqttException {
         client = new MqttClient("tcp://localhost:1883", "Sending");
         client.connect();
+
+        PowerComponent powerComponent = new PowerComponent(this);
     }
 }
