@@ -2,17 +2,19 @@ package com.unisa.raspitesi.api;
 
 import com.jayway.jsonpath.JsonPath;
 import com.unisa.raspitesi.configuration.EventPublisherService;
+import com.unisa.raspitesi.model.Camera;
+import com.unisa.raspitesi.model.CameraEvent;
 import com.unisa.raspitesi.model.Power;
 import com.unisa.raspitesi.model.PowerEvent;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PowerComponent implements MqttCallback {
+public class MqttComponent implements MqttCallback {
 
     private MqttClient client;
 
-    public PowerComponent(){
+    public MqttComponent(){
         try {
             client = new MqttClient("tcp://localhost:1883", "Sending");
             client.connect();
@@ -37,28 +39,32 @@ public class PowerComponent implements MqttCallback {
 
         String json = mqttMessage.toString();
 
-        System.out.println(json);
+
+        //System.out.println(json);
+
 
         if (json.contains("{")){
-            System.out.println("json");
+            String pathEnergy = "$.ENERGY.Voltage";
+            String pathCurrent = "$.ENERGY.Current";
+            String pathPower = "$.ENERGY.Power";
+
+            int energy = JsonPath.read(json, pathEnergy);
+            double current = JsonPath.read(json, pathCurrent);
+            int power = JsonPath.read(json,pathPower);
+
+            Power object = new Power(energy, current, power);
+            PowerEvent event = new PowerEvent(object);
+
+            EventPublisherService.eventPublisherService.publishEvent(event);
         } else {
-            System.out.println("no");
+            Camera object = new Camera("area1", Integer.valueOf(json));
+            CameraEvent event = new CameraEvent(object);
+
+            EventPublisherService.eventPublisherService.publishEvent(event);
         }
 
-        /*String pathEnergy = "$.ENERGY.Voltage";
-        String pathCurrent = "$.ENERGY.Current";
-        String pathPower = "$.ENERGY.Power";
 
-        int energy = JsonPath.read(json, pathEnergy);
-        double current = JsonPath.read(json, pathCurrent);
-        int power = JsonPath.read(json,pathPower);
 
-        Power powerObj = new Power(energy, current, power);
-
-        //System.out.println("--- FROM COMPONENT " + powerObj);
-
-        PowerEvent powerEvent = new PowerEvent(powerObj);
-        EventPublisherService.eventPublisherService.publishEvent(powerEvent);*/
 
     }
 
