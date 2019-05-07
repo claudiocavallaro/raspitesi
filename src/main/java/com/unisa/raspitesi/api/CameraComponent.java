@@ -6,10 +6,11 @@ import com.unisa.raspitesi.model.CameraEvent;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
-
+@Component
 public class CameraComponent implements MqttCallback {
 
-    public CameraComponent(MqttComponent component){
+    
+    public CameraComponent(){
         try {
             MqttClient client = component.getClient();
             client.setCallback(this);
