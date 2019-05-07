@@ -14,7 +14,7 @@ public class CameraComponent implements MqttCallback {
             client = new MqttClient("tcp://localhost:1883", "Sending");
             client.connect();
             client.setCallback(this);
-            client.subscribe("api/camera");
+            client.subscribe("camera");
 
         } catch (MqttException e) {
             e.printStackTrace();
