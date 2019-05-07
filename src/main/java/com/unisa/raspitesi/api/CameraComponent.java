@@ -1,7 +1,9 @@
 package com.unisa.raspitesi.api;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CameraComponent implements MqttCallback {
 
     MqttClient client;
