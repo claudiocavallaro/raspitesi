@@ -8,7 +8,7 @@ public class CameraEvent {
     private Camera camera;
 
 
-    private CameraEvent(Camera camera){
+    public CameraEvent(Camera camera){
         this.camera = camera;
     }
 }

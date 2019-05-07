@@ -1,6 +1,8 @@
 package com.unisa.raspitesi.api;
 
+import com.unisa.raspitesi.configuration.EventPublisherService;
 import com.unisa.raspitesi.model.Camera;
+import com.unisa.raspitesi.model.CameraEvent;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,13 @@ public class CameraComponent implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
 
-        System.out.println(" ----- " + s + " ------ " + mqttMessage.toString());
+        //System.out.println(" ----- " + s + " ------ " + mqttMessage.toString());
+
+        Camera camera = new Camera("area1", Integer.valueOf(mqttMessage.toString()));
+
+        CameraEvent event = new CameraEvent(camera);
+        EventPublisherService.eventPublisherService.publishEvent(event);
+
     }
 
     @Override

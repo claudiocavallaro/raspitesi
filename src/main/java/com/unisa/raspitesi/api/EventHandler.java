@@ -242,4 +242,11 @@ public class EventHandler {
 
 
     //************************* CAMERA EVENT *****************************
+
+    @Async
+    @EventListener
+    public void cameraPublish(CameraEvent cameraEvent){
+        Camera camera = cameraEvent.getCamera();
+        System.out.println(camera.toString());
+    }
 }

@@ -16,4 +16,9 @@ public class Camera {
         this.area = area;
         this.number = number;
     }
+
+
+    public String toString(){
+        return "AREA : " + area + " number : " + number;
+    }
 }
