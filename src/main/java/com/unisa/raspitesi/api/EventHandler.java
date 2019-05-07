@@ -205,6 +205,8 @@ public class EventHandler {
         Power power = powerEvent.getPower();
         System.out.println(power.toString());
 
+        // Qui posso anche fare in modo che se la palestra è vuota non manda alcuna get, giusto per risparmiare risorse
+
         System.out.println("----- SENDING GET ------");
         String result = sendGetPower("http://192.168.1.92:8080/api/power", powerEvent.getPower());
     }
@@ -236,4 +238,8 @@ public class EventHandler {
         }
         return noresult;
     }
+
+
+
+    //************************* CAMERA EVENT *****************************
 }
