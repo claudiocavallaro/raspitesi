@@ -30,7 +30,7 @@ public class CameraComponent implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
 
         String json = mqttMessage.toString();
-        System.out.println(json);
+        System.out.println("FROM CAMERA -------- " + json + "    " + s );
 
     }
 
