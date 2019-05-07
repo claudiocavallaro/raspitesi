@@ -10,6 +10,7 @@ public class CameraComponent implements MqttCallback {
 
 
     public CameraComponent(){
+        System.out.println("--------Costruttore------");
         try {
             client = new MqttClient("tcp://localhost:1883", "Sending");
             client.connect();
