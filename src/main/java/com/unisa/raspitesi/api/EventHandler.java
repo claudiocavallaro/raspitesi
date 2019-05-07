@@ -248,5 +248,35 @@ public class EventHandler {
     public void cameraPublish(CameraEvent cameraEvent){
         Camera camera = cameraEvent.getCamera();
         System.out.println(camera.toString());
+
+        System.out.println("----- SENDING GET ------");
+        String result = sendGetCamera("http://192.168.1.92:8080/api/power", cameraEvent.getCamera());
+    }
+
+    private String sendGetCamera(String s, Camera camera) {
+
+        String area = camera.getArea();
+        String number = String.valueOf(camera.getNumber());
+
+        String noresult = "no results from sendGet on " + s + " - check logs";
+        int numTry = 5;
+        while (numTry > 0) {
+            try {
+                com.mashape.unirest.http.HttpResponse<String> R = Unirest.get(s)
+                        .header("Content-Type", "application/json")
+                        .header("Cache-Control", "no-cache")
+                        .queryString("area", area)
+                        .queryString("number", number)
+                        .asString();
+                return R.getBody().toString();
+
+            } catch (Exception e) {
+                numTry--;
+                if (numTry == 0) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return noresult;
     }
 }
