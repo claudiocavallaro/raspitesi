@@ -1,7 +1,6 @@
 package com.unisa.raspitesi.api;
 
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.PathNotFoundException;
 import com.unisa.raspitesi.configuration.EventPublisherService;
 import com.unisa.raspitesi.model.Power;
 import com.unisa.raspitesi.model.PowerEvent;
@@ -11,17 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class PowerComponent implements MqttCallback {
 
-    MqttClient client;
 
+    MqttComponent component;
 
     public PowerComponent(){
         try {
-            client = new MqttClient("tcp://localhost:1883", "Sending");
-            client.connect();
+            MqttClient client = component.getClient();
             client.setCallback(this);
             client.subscribe("tele/spow/SENSOR");
 
-            client.subscribe("camera");
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -39,37 +36,22 @@ public class PowerComponent implements MqttCallback {
 
         String json = mqttMessage.toString();
 
-        boolean type = true;
+        //System.out.println(json);
 
-        String pathEnergy = "";
-        String pathCurrent = "";
-        String pathPower = "";
+        String pathEnergy = "$.ENERGY.Voltage";
+        String pathCurrent = "$.ENERGY.Current";
+        String pathPower = "$.ENERGY.Power";
 
-        try {
-            pathEnergy = "$.ENERGY.Voltage";
-            pathCurrent = "$.ENERGY.Current";
-            pathPower = "$.ENERGY.Power";
-        } catch (PathNotFoundException pne){
-            type = false;
-        }
+        int energy = JsonPath.read(json, pathEnergy);
+        double current = JsonPath.read(json, pathCurrent);
+        int power = JsonPath.read(json,pathPower);
 
+        Power powerObj = new Power(energy, current, power);
 
-        if (type == true){
-            int energy = JsonPath.read(json, pathEnergy);
-            double current = JsonPath.read(json, pathCurrent);
-            int power = JsonPath.read(json,pathPower);
+        //System.out.println("--- FROM COMPONENT " + powerObj);
 
-            Power powerObj = new Power(energy, current, power);
-
-            //System.out.println("--- FROM COMPONENT " + powerObj);
-
-            PowerEvent powerEvent = new PowerEvent(powerObj);
-            EventPublisherService.eventPublisherService.publishEvent(powerEvent);
-        } else {
-
-            System.out.println(json);
-        }
-
+        PowerEvent powerEvent = new PowerEvent(powerObj);
+        EventPublisherService.eventPublisherService.publishEvent(powerEvent);
 
     }
 
