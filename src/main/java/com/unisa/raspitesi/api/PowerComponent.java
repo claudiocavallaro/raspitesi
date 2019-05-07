@@ -10,12 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class PowerComponent implements MqttCallback {
 
+    private MqttClient client;
+
     public PowerComponent(){
         try {
-            MqttClient client = component.getClient();
+            client = new MqttClient("tcp://localhost:1883", "Sending");
+            client.connect();
             client.setCallback(this);
             client.subscribe("tele/spow/SENSOR");
 
+            client.subscribe("camera");
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -33,9 +37,9 @@ public class PowerComponent implements MqttCallback {
 
         String json = mqttMessage.toString();
 
-        //System.out.println(json);
+        System.out.println(json);
 
-        String pathEnergy = "$.ENERGY.Voltage";
+        /*String pathEnergy = "$.ENERGY.Voltage";
         String pathCurrent = "$.ENERGY.Current";
         String pathPower = "$.ENERGY.Power";
 
@@ -48,7 +52,7 @@ public class PowerComponent implements MqttCallback {
         //System.out.println("--- FROM COMPONENT " + powerObj);
 
         PowerEvent powerEvent = new PowerEvent(powerObj);
-        EventPublisherService.eventPublisherService.publishEvent(powerEvent);
+        EventPublisherService.eventPublisherService.publishEvent(powerEvent);*/
 
     }
 
