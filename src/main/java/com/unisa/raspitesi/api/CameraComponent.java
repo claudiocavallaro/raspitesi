@@ -1,19 +1,22 @@
 package com.unisa.raspitesi.api;
 
 import com.unisa.raspitesi.model.Camera;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CameraComponent implements MqttCallback {
 
-    //MqttClient client;
+    public CameraComponent(MqttComponent component){
+        try {
+            MqttClient client = component.getClient();
+            client.setCallback(this);
+            client.subscribe("camera");
 
-    public CameraComponent(){
 
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -24,6 +27,7 @@ public class CameraComponent implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
 
+        System.out.println(" ----- " + s + " ------ " + mqttMessage.toString());
     }
 
     @Override

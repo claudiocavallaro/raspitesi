@@ -16,5 +16,6 @@ public class MqttComponent {
         client.connect();
 
         PowerComponent powerComponent = new PowerComponent(this);
+        CameraComponent cameraComponent = new CameraComponent(this);
     }
 }
