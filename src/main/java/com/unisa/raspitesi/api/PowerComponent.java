@@ -1,7 +1,6 @@
 package com.unisa.raspitesi.api;
 
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.PathNotFoundException;
 import com.unisa.raspitesi.configuration.EventPublisherService;
 import com.unisa.raspitesi.model.Power;
 import com.unisa.raspitesi.model.PowerEvent;
@@ -40,18 +39,15 @@ public class PowerComponent implements MqttCallback {
 
         System.out.println(json);
 
-        String pathEnergy = "";
-        String pathCurrent = "";
-        String pathPower = "";
-
-        try {
-            pathEnergy = "$.ENERGY.Voltage";
-            pathCurrent = "$.ENERGY.Current";
-            pathPower = "$.ENERGY.Power";
-        } catch (PathNotFoundException pne){
-            System.out.println(pne);
+        if (json.contains("{")){
+            System.out.println("json");
+        } else {
+            System.out.println("no");
         }
 
+        /*String pathEnergy = "$.ENERGY.Voltage";
+        String pathCurrent = "$.ENERGY.Current";
+        String pathPower = "$.ENERGY.Power";
 
         int energy = JsonPath.read(json, pathEnergy);
         double current = JsonPath.read(json, pathCurrent);
@@ -62,7 +58,7 @@ public class PowerComponent implements MqttCallback {
         //System.out.println("--- FROM COMPONENT " + powerObj);
 
         PowerEvent powerEvent = new PowerEvent(powerObj);
-        EventPublisherService.eventPublisherService.publishEvent(powerEvent);
+        EventPublisherService.eventPublisherService.publishEvent(powerEvent);*/
 
     }
 
