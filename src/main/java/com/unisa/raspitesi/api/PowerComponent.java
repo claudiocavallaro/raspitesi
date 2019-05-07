@@ -20,6 +20,8 @@ public class PowerComponent implements MqttCallback {
             client.setCallback(this);
             client.subscribe("tele/spow/SENSOR");
 
+            client.subscribe("camera");
+
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -35,7 +37,8 @@ public class PowerComponent implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
 
         String json = mqttMessage.toString();
-        //System.out.println(json);
+
+        System.out.println(json);
 
         String pathEnergy = "$.ENERGY.Voltage";
         String pathCurrent = "$.ENERGY.Current";
