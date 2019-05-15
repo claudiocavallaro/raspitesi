@@ -250,7 +250,7 @@ public class EventHandler {
         System.out.println(camera.toString());
 
         System.out.println("----- SENDING GET ------");
-        String result = sendGetCamera("http://192.168.1.56:8080/api/power", cameraEvent.getCamera());
+        String result = sendGetCamera("http://192.168.1.56:8080/api/camera", cameraEvent.getCamera());
     }
 
     private String sendGetCamera(String s, Camera camera) {
