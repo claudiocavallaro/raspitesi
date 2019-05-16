@@ -258,6 +258,8 @@ public class EventHandler {
         String area = camera.getArea();
         String number = String.valueOf(camera.getNumber());
 
+        System.out.println(number);
+
         String noresult = "no results from sendGet on " + s + " - check logs";
         int numTry = 5;
         while (numTry > 0) {
