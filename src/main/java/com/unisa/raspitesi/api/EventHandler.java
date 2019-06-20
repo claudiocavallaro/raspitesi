@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class EventHandler {
 
+    private String ip = "172.20.10.2";
+
 
     public EventHandler() {
     }
@@ -154,7 +156,7 @@ public class EventHandler {
 
     public User completeSend(ReadEvent event) {
         System.out.println(event.getRead() + "----- SENDING GET ------");
-        String result = sendGet("http://progettotesi.ddns.net:33425/api/entrance", event.getRead().getUid());
+        String result = sendGet("http://" + ip + ":8080/api/entrance", event.getRead().getUid());
         User user = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -208,7 +210,7 @@ public class EventHandler {
         // Qui posso anche fare in modo che se la palestra è vuota non manda alcuna get, giusto per risparmiare risorse
 
         System.out.println("----- SENDING GET ------");
-        String result = sendGetPower("http://progettotesi.ddns.net:33425/api/power", powerEvent.getPower());
+        String result = sendGetPower("http://"+ ip + ":8080/api/power", powerEvent.getPower());
     }
 
     private String sendGetPower(String s, Power power) {
@@ -250,15 +252,13 @@ public class EventHandler {
         System.out.println(camera.toString());
 
         System.out.println("----- SENDING GET ------");
-        String result = sendGetCamera("http://progettotesi.ddns.net:33425/api/camera", cameraEvent.getCamera());
+        String result = sendGetCamera("http://"+ ip +":8080/api/camera", cameraEvent.getCamera());
     }
 
     private String sendGetCamera(String s, Camera camera) {
 
         String area = camera.getArea();
         String number = String.valueOf(camera.getNumber());
-
-        System.out.println(number);
 
         String noresult = "no results from sendGet on " + s + " - check logs";
         int numTry = 5;
