@@ -154,7 +154,7 @@ public class EventHandler {
 
     public User completeSend(ReadEvent event) {
         System.out.println(event.getRead() + "----- SENDING GET ------");
-        String result = sendGet("http://192.168.1.56:8080/api/entrance", event.getRead().getUid());
+        String result = sendGet("http://progettotesi.ddns.net:33425/api/entrance", event.getRead().getUid());
         User user = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -208,7 +208,7 @@ public class EventHandler {
         // Qui posso anche fare in modo che se la palestra è vuota non manda alcuna get, giusto per risparmiare risorse
 
         System.out.println("----- SENDING GET ------");
-        String result = sendGetPower("http://192.168.1.56:8080/api/power", powerEvent.getPower());
+        String result = sendGetPower("http://progettotesi.ddns.net:33425/api/power", powerEvent.getPower());
     }
 
     private String sendGetPower(String s, Power power) {
@@ -250,7 +250,7 @@ public class EventHandler {
         System.out.println(camera.toString());
 
         System.out.println("----- SENDING GET ------");
-        String result = sendGetCamera("http://192.168.1.56:8080/api/camera", cameraEvent.getCamera());
+        String result = sendGetCamera("http://progettotesi.ddns.net:33425/api/camera", cameraEvent.getCamera());
     }
 
     private String sendGetCamera(String s, Camera camera) {
