@@ -48,7 +48,7 @@
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -171,36 +171,6 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.5.0</version>
         </dependency>
-
-
-        <!-- Swaggr -->
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-            <version>${swagger.jaxrs}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>${jcraft}</version>
-        </dependency>
-
 
 
         <!-- Google GSON -->
